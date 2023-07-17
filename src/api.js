@@ -6,6 +6,13 @@ const app = express();
 
 const router = express.Router();
 
+app.use((req, res, next) => {
+   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+   next();
+ });
+
 router.get('/', (req,res) => {
    res.json({
       'hello': 'hi!'
@@ -23,4 +30,6 @@ router.get('/members', (req, res) => {
      });
  });
 
-module.exports.handler = serverless(app);
+app.use('/.netlify/functions/api', router);
+
+ module.exports.handler = serverless(app);
